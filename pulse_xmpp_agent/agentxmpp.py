@@ -206,9 +206,10 @@ class MUCBot(sleekxmpp.ClientXMPP):
                 self.is_set = True
         elif sys.platform.startswith('linux') :
             signal.signal(signal.SIGINT, self.signal_handler)
+            #signal.signal(signal.SIGTERM, self.signal_handler)
         elif sys.platform.startswith('darwin'):
             signal.signal(signal.SIGINT, self.signal_handler)
-
+            #signal.signal(signal.SIGTERM, self.signal_handler)
         self.register_handler(handler.Callback(
                                     'CustomXEP Handler',
                                     matcher.MatchXPath('{%s}iq/{%s}query' % (self.default_ns,"custom_xep")),
@@ -399,32 +400,33 @@ class MUCBot(sleekxmpp.ClientXMPP):
             if evt == win32con.CTRL_SHUTDOWN_EVENT:
                 msgevt['data']['event'] = "SHUTDOWN_EVENT"
                 self.send_message_to_master(msgevt)
-                logging.log(DEBUGPULSE, "CTRL_SHUTDOWN EVENT")
+                logging.warning("CTRL_SHUTDOWN EVENT")
                 signalint = True
                 return True
             elif evt == win32con.CTRL_LOGOFF_EVENT:
                 msgevt['data']['event'] = "LOGOFF_EVENT"
                 self.send_message_to_master(msgevt)
-                logging.log(DEBUGPULSE, "CTRL_LOGOFF EVENT")
+                logging.warning("CTRL_LOGOFF EVENT")
                 return True
             elif evt == win32con.CTRL_BREAK_EVENT:
                 msgevt['data']['event'] = "BREAK_EVENT"
                 self.send_message_to_master(msgevt)
-                logging.log(DEBUGPULSE, "CTRL_BREAK EVENT")
+                logging.warning("CTRL_BREAK EVENT")
                 return True
             elif evt == win32con.CTRL_CLOSE_EVENT:
                 msgevt['data']['event'] = "CLOSE_EVENT"
                 self.send_message_to_master(msgevt)
-                logging.log(DEBUGPULSE, "CTRL_CLOSE EVENT")
+                logging.warning("CTRL_CLOSE EVENT")
                 return True
             elif evt == win32con.CTRL_C_EVENT:
                 msgevt['data']['event'] = "CTRL_C_EVENT"
                 self.send_message_to_master(msgevt)
-                logging.log(DEBUGPULSE, "CTRL-C EVENT")
+                logging.warning("CTRL-C EVENT")
                 signalint = True
                 sys.exit(0)
                 return True
             else:
+                logging.warning("EVENT CONSOLE")
                 return False
         else:
             pass
